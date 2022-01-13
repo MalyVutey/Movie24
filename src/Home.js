@@ -35,7 +35,7 @@ const Home = ({navigation})=> {
   React.useEffect(()=>{
     getProducts();
   },[])
-
+console.log("testing ")
 
   return (
     <Root>
