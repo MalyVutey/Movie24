@@ -11,7 +11,7 @@ import Header from '../component/Header';
 // import { connect } from 'react-redux';
 import {db} from "../api/firebase";
 import * as ScreenOrientation from 'expo-screen-orientation';
-const Home = ()=> {
+const Home = ({navigation})=> {
  const [aboutgym,setAboutgym] = useState("");
  const [openEdit,setOpenEdit] = useState(false)
  const [viewVideo,setViewVideo] = useState(false)
@@ -36,7 +36,7 @@ const Home = ()=> {
     getProducts();
   },[])
 
-console.log(products)
+
   return (
     <Root>
       <Header/>
@@ -65,12 +65,12 @@ console.log(products)
               <View style={ stylehome.conPost}>
                 <View style={stylehome.conTextPos}>
                   <Text style={{color: "#FFFF"}}>Posts</Text>
-                  <Text style={{color: "#FFFF"}}>450</Text>
+                  <Text style={{color: "#FFFF"}}>{products.length}</Text>
                 </View>
                 <View style={{borderLeftWidth:1,height:30,borderColor: "#cccc",marginTop:8}}></View>
                 <View style={stylehome.conTextPos}>
                   <Text style={{color: "#FFFF"}}>Fans</Text>
-                  <Text style={{color: "#FFFF"}}>450</Text>
+                  <Text style={{color: "#FFFF"}}>{products.length}</Text>
                 </View>
               </View>
            </View>
@@ -78,6 +78,7 @@ console.log(products)
       </View>
       {/* end nav  */}
       {/* start buttom setting and inbox  */}
+
       <View style={stylehome.conSetting}>
         <TouchableWithoutFeedback>
           <View style={stylehome.settingBtn}>
@@ -90,25 +91,37 @@ console.log(products)
           </View>
         </TouchableWithoutFeedback>
       </View>
+
+
       {/* end buttom setting and inbox  */}
       {/* start navbar */}
       <View style={stylehome.Connavbar}>
         <View style={stylehome.navbar}>
-          <View style={stylehome.about}>
-            <Text style={stylehome.aboutTexts}>About</Text>
-          </View>
-          <View style={stylehome.about}>
-            <Text style={stylehome.aboutText}>Post</Text>
-          </View>
-          <View style={stylehome.about}>
-            <Text style={stylehome.aboutText}>Gallery</Text>
-          </View>
-          <View style={stylehome.about}>
-            <Text style={stylehome.aboutText}>Board</Text>
-          </View>
-          <View style={stylehome.about}>
-            <Text style={stylehome.aboutText}>Trainers</Text>
-          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('VideoPlay')}>
+            <View style={stylehome.about}>
+              <Text style={stylehome.aboutTexts}>About</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('VideoPlay')}>
+            <View style={stylehome.about}>
+              <Text style={stylehome.aboutText}>Post</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('VideoPlay')}>
+            <View style={stylehome.about}>
+              <Text style={stylehome.aboutText}>Gallery</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('VideoPlay')}>
+            <View style={stylehome.about}>
+              <Text style={stylehome.aboutText}>Board</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('VideoPlay')}>
+            <View style={stylehome.about}>
+              <Text style={stylehome.aboutText}>Trainers</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
       {/* end navbar  */}
@@ -125,11 +138,11 @@ console.log(products)
             </View>
           </View>
           <View style={stylehome.AboutGymedit}>
-            <TouchableWithoutFeedback onPress={() => setOpenEdit(!openEdit)}>
+            {/* <TouchableWithoutFeedback onPress={() => setOpenEdit(!openEdit)}>
               <View style={stylehome.btnAboutEdit}>
                 <MaterialIcons name="mode-edit" size={20} color="#FFFF" />
               </View>
-              </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback> */}
               <TouchableWithoutFeedback>
               <View style={stylehome.btnAboutEdit}>
                 <AntDesign name="arrowdown" size={20} color="#FFFF" />
@@ -142,14 +155,16 @@ console.log(products)
       {/* start contact  */}
       <View style={stylehome.conContact}>
         <View style={stylehome.subContact}>
-          <View style={stylehome.iconContact}>
-            <View style={stylehome.icons}>
-              <FontAwesome name="phone" size={24} color="black" onPress={()=> Linking.openURL("https://web.facebook.com/?_rdc=1&_rdr")} />
+          <TouchableOpacity onPress={()=> Linking.openURL("tel: 093743380")}> 
+            <View style={stylehome.iconContact}>
+              <View style={stylehome.icons}>
+                <FontAwesome name="phone" size={24} color="black" />
+              </View>
+              <View>
+                <Text style={{color:"#FFFF",fontSize: 16}}>+855-979833522</Text>
+              </View>
             </View>
-            <View>
-              <Text style={{color:"#FFFF",fontSize: 16}}>+855-979833522</Text>
-            </View>
-          </View>
+          </TouchableOpacity>
           <View style={stylehome.iconContact}>
             <View style={stylehome.icons}>
               <Ionicons name="earth" size={24} color="black"  onPress={()=> Linking.openURL("https://web.facebook.com/?_rdc=1&_rdr")} />
@@ -179,8 +194,8 @@ console.log(products)
           <View style={stylehome.conSlider}>
             {products && products?.map((item, ind)=>{
               return(
-              <TouchableOpacity>
-               <View key={ind}>
+              <TouchableOpacity key={ind} onPress={() => navigation.navigate('VideoPlay')}>
+               <View>
                 <Image style={stylehome.imageSilder} source={{uri: item.image}}/>
                </View>
               </TouchableOpacity>
@@ -208,13 +223,14 @@ console.log(products)
                 <View style={stylehome.GalleryColin}>
                   <Image style={stylehome.imageGallery} source={{uri: products[3]?.image}}/>
                 </View>
-                <View  style={stylehome.GalleryColout}>
-                 <Image style={stylehome.imageGallery} source={{uri: products[2]?.image}}/>
-                </View>
+                 <View  style={stylehome.GalleryColout}>
+                  <Image style={stylehome.imageGallery} source={{uri: products[2]?.image}}/>
+                 </View>
               </View>
               <View style={stylehome.GalleryColTow}>
                <Image style={stylehome.imageGallery} source={{uri: products[0]?.image}}/>
             </View>
+
           </View>
         </View>
         <View style={stylehome.nextSlider}>
@@ -270,8 +286,8 @@ console.log(products)
          
            {products&& products?.map((item,ind) =>{
              return(
-              <TouchableOpacity>
-                <View key={ind}>
+              <TouchableOpacity key={ind} onPress={() => navigation.navigate('VideoPlay')}>
+                <View >
                   <Image style={stylehome.imageSilderGymTrain} 
                   source={{uri: item?.image }}/>
                   <Text style={{color: "#FFFF",paddingVertical: 10}}>Michel l</Text>
